@@ -15,7 +15,6 @@ import ie.setu.eventJournal.ui.auth.LoggedInViewModel
 import ie.setu.eventJournal.ui.report.ReportViewModel
 import timber.log.Timber
 
-
 class EventDetailFragment : Fragment() {
 
     private lateinit var detailViewModel: EventDetailViewModel
@@ -35,14 +34,14 @@ class EventDetailFragment : Fragment() {
         detailViewModel.observableEvent.observe(viewLifecycleOwner, Observer { render() })
 
         fragBinding.editEventButton.setOnClickListener {
-            detailViewModel.updateEvent(loggedInViewModel.liveFirebaseUser.value?.email!!,
+            detailViewModel.updateEvent(loggedInViewModel.liveFirebaseUser.value?.uid!!,
                 args.eventid, fragBinding.eventvm?.observableEvent!!.value!!)
             findNavController().navigateUp()
         }
 
         fragBinding.deleteEventButton.setOnClickListener {
-            reportViewModel.delete(loggedInViewModel.liveFirebaseUser.value?.email!!,
-                detailViewModel.observableEvent.value?._id!!)
+            reportViewModel.delete(loggedInViewModel.liveFirebaseUser.value?.uid!!,
+                detailViewModel.observableEvent.value?.uid!!)
             findNavController().navigateUp()
         }
 
@@ -50,15 +49,19 @@ class EventDetailFragment : Fragment() {
     }
 
     private fun render() {
-        fragBinding.editMessage.setText("A Message")
-        fragBinding.editUpvotes.setText("0")
+        fragBinding.editName.setText("Event Name")
+        fragBinding.editDescription.setText("Description")
+        fragBinding.editType.setText("Type")
+        fragBinding.editDate.setText("Date")
+        fragBinding.editTime.setText("Time")
+        fragBinding.editAmount.setText("0")
         fragBinding.eventvm = detailViewModel
         Timber.i("Retrofit fragBinding.eventvm == $fragBinding.eventvm")
     }
 
     override fun onResume() {
         super.onResume()
-        detailViewModel.getEvent(loggedInViewModel.liveFirebaseUser.value?.email!!,
+        detailViewModel.getEvent(loggedInViewModel.liveFirebaseUser.value?.uid!!,
             args.eventid)
 
     }

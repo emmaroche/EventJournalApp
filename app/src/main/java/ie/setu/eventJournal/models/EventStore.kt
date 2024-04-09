@@ -1,15 +1,17 @@
 package ie.setu.eventJournal.models
 
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseUser
 
 interface EventStore {
     fun findAll(eventsList:
                 MutableLiveData<List<EventModel>>)
-    fun findAll(email:String,
-                eventsList: MutableLiveData<List<EventModel>>)
-    fun findById(email:String, id: String, event: MutableLiveData<EventModel>)
-    fun create(event: EventModel)
-    fun delete(email:String,id: String)
-    fun update(email: String,id: String, event: EventModel)
+    fun findAll(userid:String,
+                eventsList:
+                MutableLiveData<List<EventModel>>)
+    fun findById(userid:String, eventid: String,
+                 event: MutableLiveData<EventModel>)
+    fun create(firebaseUser: MutableLiveData<FirebaseUser>, event: EventModel)
+    fun delete(userid:String, eventid: String)
+    fun update(userid:String, eventid: String, event: EventModel)
 }
-
