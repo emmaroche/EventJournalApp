@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -29,6 +30,9 @@ class Home : AppCompatActivity() {
     private lateinit var loggedInViewModel : LoggedInViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Resource used to implement splash screen: https://developer.android.com/training/wearables/apps/splash-screen
+        installSplashScreen()
+
         super.onCreate(savedInstanceState)
 
         homeBinding = HomeBinding.inflate(layoutInflater)

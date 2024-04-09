@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import ie.setu.eventJournal.R
 import ie.setu.eventJournal.databinding.LoginBinding
@@ -18,6 +19,7 @@ class Login : AppCompatActivity() {
     private lateinit var loginBinding : LoginBinding
 
     public override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         loginBinding = LoginBinding.inflate(layoutInflater)
         setContentView(loginBinding.root)
