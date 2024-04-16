@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="24dp" />
 
     <TextView
         android:id="@+id/eventSubtitle"
@@ -37,17 +37,17 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:hint="Event Name"
+        android:hint="@string/event_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/eventSubtitle" />
 
     <EditText
-        android:id="@+id/editTextTime"
+        android:id="@+id/editTextType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Event Time"
+        android:hint="@string/event_type"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTextName"
@@ -59,10 +59,10 @@
         android:id="@+id/editTextDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Event Date"
+        android:hint="@string/event_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextTime"
+        app:layout_constraintTop_toBottomOf="@id/editTextType"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp" />
@@ -71,7 +71,7 @@
         android:id="@+id/editTextDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Event Description"
+        android:hint="@string/event_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTextDate"
@@ -80,10 +80,10 @@
         android:layout_marginEnd="8dp" />
 
     <EditText
-        android:id="@+id/editTextType"
+        android:id="@+id/editTextTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Event Type"
+        android:hint="@string/event_time"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTextDescription"
@@ -97,10 +97,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:text="Budget"
+        android:text="@string/budget"
         android:textAppearance="?android:attr/textAppearanceMedium"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextType" />
+        app:layout_constraintTop_toBottomOf="@id/editTextTime" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -143,7 +143,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@id/amount"
         app:layout_constraintTop_toTopOf="@id/amount"
-        app:layout_constraintVertical_bias="0.272" />
+        app:layout_constraintVertical_bias="0.484" />
 
     <TextView
         android:id="@+id/total"
