@@ -14,11 +14,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App.Starting"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        android:windowSoftInputMode="adjustResize">
 
         <activity
             android:name="ie.setu.eventJournal.ui.auth.Login"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +32,8 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="ie.setu.eventJournal.ui.home.Home">
+            android:name="ie.setu.eventJournal.ui.home.Home"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

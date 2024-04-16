@@ -65,8 +65,8 @@ class ReportFragment : Fragment(), EventClickListener {
                 showLoader(loader,"Deleting Event")
                 val adapter = fragBinding.recyclerView.adapter as EventAdapter
                 adapter.removeAt(viewHolder.adapterPosition)
-                reportViewModel.delete(reportViewModel.liveFirebaseUser.value?.email!!,
-                    (viewHolder.itemView.tag as EventModel)._id)
+                reportViewModel.delete(reportViewModel.liveFirebaseUser.value?.uid!!,
+                    (viewHolder.itemView.tag as EventModel).uid)
 
                 hideLoader(loader)
             }
@@ -116,7 +116,7 @@ class ReportFragment : Fragment(), EventClickListener {
     }
 
     override fun onEventClick(event: EventModel) {
-        val action = ReportFragmentDirections.actionReportFragmentToEventDetailFragment(event._id)
+        val action = ReportFragmentDirections.actionReportFragmentToEventDetailFragment(event.uid)
         findNavController().navigate(action)
     }
 
