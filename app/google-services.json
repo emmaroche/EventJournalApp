@@ -13,7 +13,12 @@
           "package_name": "ie.setu.eventJournal"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "469289401091-fk7hd1f68ec7uvp9o7fksv7cg0leeqao.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCv6aCj2OZAB65TAzHktjRyvtB4OuSp-4s"
@@ -21,7 +26,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469289401091-fk7hd1f68ec7uvp9o7fksv7cg0leeqao.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

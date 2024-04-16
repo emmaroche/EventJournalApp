@@ -7,43 +7,58 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import ie.setu.eventJournal.R
 import ie.setu.eventJournal.databinding.LoginBinding
+import ie.setu.eventJournal.ui.home.Home
 import timber.log.Timber
 import androidx.lifecycle.Observer
-import ie.setu.eventJournal.ui.home.Home
 
 class Login : AppCompatActivity() {
 
-    private lateinit var loginRegisterViewModel : LoginRegisterViewModel
-    private lateinit var loginBinding : LoginBinding
+    // Google authentication reference: https://www.youtube.com/watch?v=-tCIsI7aZGk
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
+    private lateinit var loginRegisterViewModel: LoginRegisterViewModel
+    private lateinit var loginBinding: LoginBinding
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
+
+    companion object {
+        private const val RC_SIGN_IN = 120
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         loginBinding = LoginBinding.inflate(layoutInflater)
         setContentView(loginBinding.root)
 
+        // Configure Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.client_id))
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        firebaseAuth = FirebaseAuth.getInstance()
+
         loginBinding.emailSignInButton.setOnClickListener {
-            signIn(loginBinding.fieldEmail.text.toString(),
-                loginBinding.fieldPassword.text.toString())
+            signIn(loginBinding.fieldEmail.text.toString(), loginBinding.fieldPassword.text.toString())
         }
+
         loginBinding.emailCreateAccountButton.setOnClickListener {
-            createAccount(loginBinding.fieldEmail.text.toString(),
-                loginBinding.fieldPassword.text.toString())
+            createAccount(loginBinding.fieldEmail.text.toString(), loginBinding.fieldPassword.text.toString())
         }
-    }
 
-    public override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        loginRegisterViewModel = ViewModelProvider(this).get(LoginRegisterViewModel::class.java)
-        loginRegisterViewModel.liveFirebaseUser.observe(this, Observer
-        { firebaseUser -> if (firebaseUser != null)
-            startActivity(Intent(this, Home::class.java)) })
-
-        loginRegisterViewModel.firebaseAuthManager.errorStatus.observe(this, Observer
-        { status -> checkStatus(status) })
+        loginBinding.googleSignInButton.setOnClickListener {
+            signInWithGoogle()
+        }
     }
 
     //Required to exit app from Login Screen - must investigate this further
@@ -53,18 +68,42 @@ class Login : AppCompatActivity() {
         finish()
     }
 
+    override fun onStart() {
+        super.onStart()
+        // Email and pass: Check if user is signed in (non-null) and update UI accordingly.
+        loginRegisterViewModel = ViewModelProvider(this).get(LoginRegisterViewModel::class.java)
+        loginRegisterViewModel.liveFirebaseUser.observe(this, Observer
+        { firebaseUser -> if (firebaseUser != null)
+            startActivity(Intent(this, Home::class.java)) })
+
+        loginRegisterViewModel.firebaseAuthManager.errorStatus.observe(this, Observer
+        { status -> checkStatus(status) })
+
+        // Google auth: Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = firebaseAuth.currentUser
+        if (currentUser != null) {
+            startActivity(Intent(this, Home::class.java))
+            finish()
+        }
+    }
+
     private fun createAccount(email: String, password: String) {
         Timber.d("createAccount:$email")
-        if (!validateForm()) { return }
+        if (!validateForm()) return
 
-        loginRegisterViewModel.register(email,password)
+        loginRegisterViewModel.register(email, password)
     }
 
     private fun signIn(email: String, password: String) {
         Timber.d("signIn:$email")
-        if (!validateForm()) { return }
+        if (!validateForm()) return
 
-        loginRegisterViewModel.login(email,password)
+        loginRegisterViewModel.login(email, password)
+    }
+
+    private fun signInWithGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
     private fun checkStatus(error:Boolean) {
@@ -72,6 +111,36 @@ class Login : AppCompatActivity() {
             Toast.makeText(this,
                 getString(R.string.auth_failed),
                 Toast.LENGTH_LONG).show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                firebaseAuthWithGoogle(account!!)
+            } catch (e: ApiException) {
+                Timber.w("Google sign in failed: ${e.statusCode}")
+            }
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
+        Timber.d("firebaseAuthWithGoogle:${acct.id}")
+        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
+        firebaseAuth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    Timber.d("signInWithCredential:success")
+                    val user = firebaseAuth.currentUser
+                    startActivity(Intent(this, Home::class.java))
+                    finish()
+                } else {
+                    Timber.w("signInWithCredential:failure", task.exception)
+                    Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     private fun validateForm(): Boolean {
@@ -95,4 +164,3 @@ class Login : AppCompatActivity() {
         return valid
     }
 }
-
