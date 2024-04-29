@@ -1,184 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/eventsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.event.EventFragment">
 
-    <TextView
-        android:id="@+id/eventTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/eventTitle"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/eventsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/eventSubtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/eventSubtitle"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/eventTitle" />
+        <TextView
+            android:id="@+id/eventTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/eventTitle"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editTextName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:hint="@string/event_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/eventSubtitle" />
+        <TextView
+            android:id="@+id/eventSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/eventSubtitle"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/eventTitle" />
 
-    <EditText
-        android:id="@+id/editTextType"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/event_type"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextName"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp" />
+        <EditText
+            android:id="@+id/editTextName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/event_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/eventSubtitle" />
 
-    <EditText
-        android:id="@+id/editTextDate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/event_date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextType"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp" />
+        <EditText
+            android:id="@+id/editTextType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/event_type"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextName" />
 
-    <EditText
-        android:id="@+id/editTextDescription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/event_description"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextDate"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp" />
+        <EditText
+            android:id="@+id/editTextDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/event_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextType" />
 
-    <EditText
-        android:id="@+id/editTextTime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/event_time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextDescription"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp" />
+        <EditText
+            android:id="@+id/editTextDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/event_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextDate" />
 
-    <TextView
-        android:id="@+id/eventBudget"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/budget"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextTime" />
+        <EditText
+            android:id="@+id/editTextTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/event_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextDescription" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="349dp"
-        android:layout_height="14dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:indeterminate="false"
-        app:layout_constraintBottom_toTopOf="@id/amount"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/eventBudget" />
+        <TextView
+            android:id="@+id/eventBudget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/budget"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextTime" />
 
-    <TextView
-        android:id="@+id/amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:text="@string/amount"
-        android:textAppearance="@android:style/TextAppearance.Material.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/progressBar" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="349dp"
+            android:layout_height="14dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:indeterminate="false"
+            app:layout_constraintBottom_toTopOf="@id/amount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/eventBudget" />
 
-    <EditText
-        android:id="@+id/paymentAmount"
-        android:layout_width="270dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:hint="@string/enter_amount"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="@id/amount"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@id/amount"
-        app:layout_constraintTop_toTopOf="@id/amount"
-        app:layout_constraintVertical_bias="0.484" />
+        <TextView
+            android:id="@+id/amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="28dp"
+            android:text="@string/amount"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/progressBar" />
 
-    <TextView
-        android:id="@+id/total"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
-        android:text="@string/total"
-        android:textAppearance="@android:style/TextAppearance.Material.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/amount" />
+        <EditText
+            android:id="@+id/paymentAmount"
+            android:layout_width="270dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:ems="10"
+            android:hint="@string/enter_amount"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="@id/amount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@id/amount"
+            app:layout_constraintTop_toTopOf="@id/amount"
+            app:layout_constraintVertical_bias="0.484" />
 
-    <TextView
-        android:id="@+id/totalSoFar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="@string/totalSoFar"
-        android:textAppearance="@android:style/TextAppearance.Material.Medium"
-        app:layout_constraintBottom_toBottomOf="@id/total"
-        app:layout_constraintStart_toEndOf="@id/total"
-        app:layout_constraintTop_toTopOf="@id/total"
-        app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="36dp"
+            android:text="@string/total"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/amount" />
 
-    <Button
-        android:id="@+id/eventButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/eventButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/totalSoFar"/>
+        <TextView
+            android:id="@+id/totalSoFar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="@string/totalSoFar"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            app:layout_constraintBottom_toBottomOf="@id/total"
+            app:layout_constraintStart_toEndOf="@id/total"
+            app:layout_constraintTop_toTopOf="@id/total"
+            app:layout_constraintVertical_bias="0.0" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/chooseImage"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/button_addImage"
+            app:layout_constraintEnd_toStartOf="@+id/eventLocation"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/total" />
+
+        <Button
+            android:id="@+id/eventLocation"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="28dp"
+            android:text="@string/button_location"
+            app:layout_constraintBaseline_toBaselineOf="@id/chooseImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.466"
+            app:layout_constraintStart_toEndOf="@id/chooseImage"
+            app:layout_constraintTop_toTopOf="@id/chooseImage" />
+
+        <ImageView
+            android:id="@+id/locationImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@id/eventButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eventLocation"
+            app:srcCompat="@drawable/ic_launcher_background" />
+
+        <Button
+            android:id="@+id/eventButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/eventButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/locationImage" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

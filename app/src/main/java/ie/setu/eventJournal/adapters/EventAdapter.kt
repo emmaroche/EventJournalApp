@@ -15,21 +15,20 @@ interface EventClickListener {
     fun onEventClick(event: EventModel)
 }
 
-class EventAdapter constructor(private var events: ArrayList<EventModel>,
-                                  private val listener: EventClickListener,
-                               private val readOnly: Boolean)
-    : RecyclerView.Adapter<EventAdapter.MainHolder>() {
+class EventAdapter constructor(
+    private var events: ArrayList<EventModel>,
+    private val listener: EventClickListener,
+    private val readOnly: Boolean
+) : RecyclerView.Adapter<EventAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-        val binding = CardEventBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
-
+        val binding = CardEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MainHolder(binding, readOnly)
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        val event = events[holder.adapterPosition]
-        holder.bind(event,listener)
+        val event = events[position]
+        holder.bind(event, listener)
     }
 
     fun removeAt(position: Int) {
@@ -39,7 +38,7 @@ class EventAdapter constructor(private var events: ArrayList<EventModel>,
 
     override fun getItemCount(): Int = events.size
 
-    inner class MainHolder(val binding : CardEventBinding, private val readOnly : Boolean) :
+    inner class MainHolder(val binding: CardEventBinding, private val readOnly: Boolean) :
         RecyclerView.ViewHolder(binding.root) {
 
         val readOnlyRow = readOnly
@@ -47,11 +46,15 @@ class EventAdapter constructor(private var events: ArrayList<EventModel>,
         fun bind(event: EventModel, listener: EventClickListener) {
             binding.root.tag = event
             binding.event = event
-            Picasso.get().load(event.profilepic.toUri())
+
+            // Load the image URI into imageIcon ImageView using Picasso
+            Picasso.get()
+                .load(event.image.toUri())
                 .resize(200, 200)
                 .transform(customTransformation())
                 .centerCrop()
                 .into(binding.imageIcon)
+
             binding.root.setOnClickListener { listener.onEventClick(event) }
             binding.executePendingBindings()
         }

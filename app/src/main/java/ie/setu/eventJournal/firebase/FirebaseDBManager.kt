@@ -110,24 +110,41 @@ object FirebaseDBManager : EventStore {
         database.updateChildren(childUpdate)
     }
 
-    fun updateImageRef(userid: String, imageUri: String) {
-
+    fun updateProfilePicture(userid: String, imageUri: String) {
         val userEvents = database.child("user-events").child(userid)
-        val allEvents = database.child("events")
-
-        userEvents.addListenerForSingleValueEvent(
-            object : ValueEventListener {
-                override fun onCancelled(error: DatabaseError) {}
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    snapshot.children.forEach {
-                        //Update Users imageUri
-                        it.ref.child("profilepic").setValue(imageUri)
-                        //Update all events that match 'it'
-                        val donation = it.getValue(EventModel::class.java)
-                        allEvents.child(donation!!.uid!!)
-                            .child("profilepic").setValue(imageUri)
-                    }
+        userEvents.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {}
+            override fun onDataChange(snapshot: DataSnapshot) {
+                snapshot.children.forEach {
+                    it.ref.child("profilepic").setValue(imageUri)
                 }
-            })
+            }
+        })
     }
+
+    fun updateLocationImage(eventId: String, imageUri: String) {
+        database.child("events").child(eventId).child("image").setValue(imageUri)
+    }
+
+
+//    fun updateImageRef(userid: String, imageUri: String) {
+//
+//        val userEvents = database.child("user-events").child(userid)
+//        val allEvents = database.child("events")
+//
+//        userEvents.addListenerForSingleValueEvent(
+//            object : ValueEventListener {
+//                override fun onCancelled(error: DatabaseError) {}
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    snapshot.children.forEach {
+//                        //Update Users imageUri
+//                        it.ref.child("image").setValue(imageUri)
+//                        //Update all events that match 'it'
+//                        val event = it.getValue(EventModel::class.java)
+//                        allEvents.child(event!!.uid!!)
+//                            .child("image").setValue(imageUri)
+//                    }
+//                }
+//            })
+//    }
 }
