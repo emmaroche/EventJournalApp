@@ -107,6 +107,21 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/emailPasswordButtons"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/googleSignInButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/signedInButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -138,24 +153,24 @@
         </LinearLayout>
 
         <!-- Google Sign-In Button -->
-        <LinearLayout
-            android:id="@+id/googleSignInLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/emailPasswordButtons"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/googleSignInLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/emailPasswordButtons"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:paddingLeft="16dp"-->
+<!--            android:paddingRight="16dp">-->
 
-            <Button
-                android:id="@+id/googleSignInButton"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Sign in with Google"
-                android:theme="@style/ThemeOverlay.MyDarkButton" />
+<!--            <Button-->
+<!--                android:id="@+id/googleSignInButton"-->
+<!--                style="@style/Widget.AppCompat.Button.Colored"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Sign in with Google"-->
+<!--                android:theme="@style/ThemeOverlay.MyDarkButton" />-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
     </RelativeLayout>
 

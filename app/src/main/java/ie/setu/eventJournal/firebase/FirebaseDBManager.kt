@@ -16,7 +16,25 @@ object FirebaseDBManager : EventStore {
     var database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
     override fun findAll(eventsList: MutableLiveData<List<EventModel>>) {
-        TODO("Not yet implemented")
+        database.child("events")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase Event error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<EventModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val event = it.getValue(EventModel::class.java)
+                        localList.add(event!!)
+                    }
+                    database.child("events")
+                        .removeEventListener(this)
+
+                    eventsList.value = localList
+                }
+            })
     }
 
     override fun findAll(userid: String, eventsList: MutableLiveData<List<EventModel>>) {
@@ -48,11 +66,10 @@ object FirebaseDBManager : EventStore {
             .child(eventid).get().addOnSuccessListener {
                 event.value = it.getValue(EventModel::class.java)
                 Timber.i("firebase Got value ${it.value}")
-            }.addOnFailureListener{
+            }.addOnFailureListener {
                 Timber.e("firebase Error getting data $it")
             }
     }
-
 
     override fun create(firebaseUser: MutableLiveData<FirebaseUser>, event: EventModel) {
         Timber.i("Firebase DB Reference : $database")
@@ -75,22 +92,42 @@ object FirebaseDBManager : EventStore {
 
     override fun delete(userid: String, eventid: String) {
 
-        val childDelete : MutableMap<String, Any?> = HashMap()
+        val childDelete: MutableMap<String, Any?> = HashMap()
         childDelete["/events/$eventid"] = null
         childDelete["/user-events/$userid/$eventid"] = null
 
         database.updateChildren(childDelete)
     }
 
-
     override fun update(userid: String, eventid: String, event: EventModel) {
 
         val eventValues = event.toMap()
 
-        val childUpdate : MutableMap<String, Any?> = HashMap()
+        val childUpdate: MutableMap<String, Any?> = HashMap()
         childUpdate["events/$eventid"] = eventValues
         childUpdate["user-events/$userid/$eventid"] = eventValues
 
         database.updateChildren(childUpdate)
+    }
+
+    fun updateImageRef(userid: String, imageUri: String) {
+
+        val userEvents = database.child("user-events").child(userid)
+        val allEvents = database.child("events")
+
+        userEvents.addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {}
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children.forEach {
+                        //Update Users imageUri
+                        it.ref.child("profilepic").setValue(imageUri)
+                        //Update all events that match 'it'
+                        val donation = it.getValue(EventModel::class.java)
+                        allEvents.child(donation!!.uid!!)
+                            .child("profilepic").setValue(imageUri)
+                    }
+                }
+            })
     }
 }
