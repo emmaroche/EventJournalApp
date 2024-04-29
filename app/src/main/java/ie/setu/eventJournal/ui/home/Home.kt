@@ -1,12 +1,15 @@
 package ie.setu.eventJournal.ui.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -25,6 +28,9 @@ import ie.setu.eventJournal.databinding.NavHeaderBinding
 import ie.setu.eventJournal.firebase.FirebaseImageManager
 import ie.setu.eventJournal.ui.auth.LoggedInViewModel
 import ie.setu.eventJournal.ui.auth.Login
+import ie.setu.eventJournal.ui.map.MapsViewModel
+import ie.setu.eventJournal.utils.checkLocationPermissions
+import ie.setu.eventJournal.utils.isPermissionGranted
 import ie.setu.eventJournal.utils.readImageUri
 import ie.setu.eventJournal.utils.showImagePicker2
 import timber.log.Timber
@@ -38,6 +44,7 @@ class Home : AppCompatActivity() {
     private lateinit var loggedInViewModel : LoggedInViewModel
     private lateinit var headerView : View
     private lateinit var intentLauncher : ActivityResultLauncher<Intent>
+    private val mapsViewModel : MapsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Resource used to implement splash screen: https://developer.android.com/training/wearables/apps/splash-screen
@@ -53,11 +60,15 @@ class Home : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment)
 
+        if(checkLocationPermissions(this)) {
+            mapsViewModel.updateCurrentLocation()
+        }
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.eventFragment, R.id.reportFragment, R.id.aboutFragment), drawerLayout)
+            R.id.eventFragment, R.id.reportFragment, R.id.mapsFragment, R.id.aboutFragment), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         val navView = homeBinding.navView
@@ -155,5 +166,20 @@ class Home : AppCompatActivity() {
                     RESULT_CANCELED -> { } else -> { }
                 }
             }
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (isPermissionGranted(requestCode, grantResults))
+            mapsViewModel.updateCurrentLocation()
+        else {
+            // permissions denied, so use a default location
+            mapsViewModel.currentLocation.value = Location("Default").apply {
+                latitude = 52.245696
+                longitude = -7.139102
+            }
+        }
+        Timber.i("LOC : %s", mapsViewModel.currentLocation.value)
     }
 }

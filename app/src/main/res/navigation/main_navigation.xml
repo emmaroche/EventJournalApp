@@ -49,4 +49,13 @@
             android:name="eventid"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="ie.setu.eventJournal.ui.map.MapsFragment"
+        android:label="Event Map"
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_mapsFragment_to_eventDetailFragment"
+            app:destination="@id/eventDetailFragment" />
+    </fragment>
 </navigation>

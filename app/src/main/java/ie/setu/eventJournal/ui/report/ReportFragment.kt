@@ -96,12 +96,12 @@ class ReportFragment : Fragment(), EventClickListener {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_report, menu)
 
-                val item = menu.findItem(R.id.toggleDonations) as MenuItem
+                val item = menu.findItem(R.id.toggleEvents) as MenuItem
                 item.setActionView(R.layout.togglebutton_layout)
-                val toggleDonations: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
-                toggleDonations.isChecked = false
+                val toggleEvents: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
+                toggleEvents.isChecked = false
 
-                toggleDonations.setOnCheckedChangeListener { _, isChecked ->
+                toggleEvents.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) reportViewModel.loadAll()
                     else reportViewModel.load()
                 }

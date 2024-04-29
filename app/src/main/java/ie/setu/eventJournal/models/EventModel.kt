@@ -17,7 +17,9 @@ data class EventModel(
     var amount: Int = 0,
     var profilepic: String = "",
     var image: String = "",
-    val email: String = "joe@bloggs.com")
+    val email: String = "joe@bloggs.com",
+    var latitude: Double = 0.0,
+    var longitude: Double = 0.0)
     : Parcelable
 {
     @Exclude
@@ -32,7 +34,9 @@ data class EventModel(
             "amount" to amount,
             "profilepic" to profilepic,
             "image" to image,
-            "email" to email
+            "email" to email,
+            "latitude" to latitude,
+            "longitude" to longitude
         )
     }
 }

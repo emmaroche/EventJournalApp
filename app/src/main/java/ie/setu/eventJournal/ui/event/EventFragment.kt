@@ -26,6 +26,7 @@ import ie.setu.eventJournal.firebase.FirebaseImageManager
 import ie.setu.eventJournal.firebase.FirebaseImageManager.getEventImageUri
 import ie.setu.eventJournal.models.EventModel
 import ie.setu.eventJournal.ui.auth.LoggedInViewModel
+import ie.setu.eventJournal.ui.map.MapsViewModel
 import ie.setu.eventJournal.ui.report.ReportViewModel
 import ie.setu.eventJournal.utils.showImagePicker
 import timber.log.Timber
@@ -39,7 +40,7 @@ class EventFragment : Fragment() {
     private lateinit var eventViewModel: EventViewModel
     private val reportViewModel: ReportViewModel by activityViewModels()
     private val loggedInViewModel: LoggedInViewModel by activityViewModels()
-
+    private val mapsViewModel: MapsViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _fragBinding = FragmentEventBinding.inflate(inflater, container, false)
@@ -90,7 +91,9 @@ class EventFragment : Fragment() {
                         type = eventType,
                         date = eventDate,
                         time = eventTime,
-                        image = selectedImageUri
+                        image = selectedImageUri,
+                        latitude = mapsViewModel.currentLocation.value!!.latitude,
+                        longitude = mapsViewModel.currentLocation.value!!.longitude
                     )
                 )
             }
