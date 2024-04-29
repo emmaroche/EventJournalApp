@@ -16,8 +16,9 @@ import com.squareup.picasso.Target
 
 object FirebaseImageManager {
 
-    var storage = FirebaseStorage.getInstance().reference
-    var imageUri = MutableLiveData<Uri>()
+    private var storage = FirebaseStorage.getInstance().reference
+    private var profileImageUri = MutableLiveData<Uri>() // Separates profile picture URI
+    private var eventImageUri = MutableLiveData<Uri>() // Separates event picture URI
 
     fun checkStorageForExistingProfilePic(userid: String) {
         val imageRef = storage.child("photos").child("${userid}.jpg")
@@ -25,18 +26,16 @@ object FirebaseImageManager {
 
         imageRef.metadata.addOnSuccessListener { //File Exists
             imageRef.downloadUrl.addOnCompleteListener { task ->
-                imageUri.value = task.result!!
+                profileImageUri.value = task.result!!
             }
             //File Doesn't Exist
         }.addOnFailureListener {
-            imageUri.value = Uri.EMPTY
+            profileImageUri.value = Uri.EMPTY
         }
     }
 
-    fun uploadImageToFirebase(userid: String, bitmap: Bitmap, updating: Boolean) {
-        // Get the data from an ImageView as bytes
+    fun uploadProfilePicToFirebase(userid: String, bitmap: Bitmap, updating: Boolean) {
         val imageRef = storage.child("photos").child("${userid}.jpg")
-        //val bitmap = (imageView as BitmapDrawable).bitmap
         val baos = ByteArrayOutputStream()
         lateinit var uploadTask: UploadTask
 
@@ -44,22 +43,50 @@ object FirebaseImageManager {
         val data = baos.toByteArray()
 
         imageRef.metadata.addOnSuccessListener { //File Exists
-            if (updating) // Update existing Image
-            {
+            if (updating) {
                 uploadTask = imageRef.putBytes(data)
                 uploadTask.addOnSuccessListener { ut ->
                     ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
-                        imageUri.value = task.result!!
-                        FirebaseDBManager.updateImageRef(userid, imageUri.value.toString())
+                        profileImageUri.value = task.result!!
+                        FirebaseDBManager.updateProfilePicture(userid, profileImageUri.value.toString())
                     }
                 }
             }
-        }.addOnFailureListener { //File Doesn't Exist
+        }.addOnFailureListener {
             uploadTask = imageRef.putBytes(data)
             uploadTask.addOnSuccessListener { ut ->
                 ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
-                    imageUri.value = task.result!!
-                    FirebaseDBManager.updateImageRef(userid, imageUri.value.toString())
+                    profileImageUri.value = task.result!!
+                    FirebaseDBManager.updateProfilePicture(userid, profileImageUri.value.toString())
+                }
+            }
+        }
+    }
+
+    fun uploadEventPictureToFirebase(userid: String, bitmap: Bitmap, updating: Boolean) {
+        val imageRef = storage.child("event-photos").child("${userid}.jpg")
+        val baos = ByteArrayOutputStream()
+        lateinit var uploadTask: UploadTask
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+
+        imageRef.metadata.addOnSuccessListener { //File Exists
+            if (updating) {
+                uploadTask = imageRef.putBytes(data)
+                uploadTask.addOnSuccessListener { ut ->
+                    ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
+                        eventImageUri.value = task.result!!
+                        FirebaseDBManager.updateLocationImage(userid, eventImageUri.value.toString())
+                    }
+                }
+            }
+        }.addOnFailureListener {
+            uploadTask = imageRef.putBytes(data)
+            uploadTask.addOnSuccessListener { ut ->
+                ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
+                    eventImageUri.value = task.result!!
+                    FirebaseDBManager.updateLocationImage(userid, eventImageUri.value.toString())
                 }
             }
         }
@@ -77,7 +104,7 @@ object FirebaseImageManager {
                     from: Picasso.LoadedFrom?
                 ) {
                     Timber.i("DX onBitmapLoaded $bitmap")
-                    uploadImageToFirebase(userid, bitmap!!, updating)
+                    uploadProfilePicToFirebase(userid, bitmap!!, updating)
                     imageView.setImageBitmap(bitmap)
                 }
 
@@ -92,7 +119,7 @@ object FirebaseImageManager {
             })
     }
 
-    fun updateDefaultImage(userid: String, resource: Int, imageView: ImageView) {
+    fun updateDefaultProfilePicture(userid: String, resource: Int, imageView: ImageView) {
         Picasso.get().load(resource)
             .resize(200, 200)
             .transform(customTransformation())
@@ -104,7 +131,7 @@ object FirebaseImageManager {
                     from: Picasso.LoadedFrom?
                 ) {
                     Timber.i("DX onBitmapLoaded $bitmap")
-                    uploadImageToFirebase(userid, bitmap!!, false)
+                    uploadProfilePicToFirebase(userid, bitmap!!, false)
                     imageView.setImageBitmap(bitmap)
                 }
 
@@ -117,5 +144,13 @@ object FirebaseImageManager {
 
                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
             })
+    }
+
+    fun getProfileImageUri(): MutableLiveData<Uri> {
+        return profileImageUri
+    }
+
+    fun getEventImageUri(): MutableLiveData<Uri> {
+        return eventImageUri
     }
 }

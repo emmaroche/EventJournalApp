@@ -26,7 +26,7 @@ import ie.setu.eventJournal.firebase.FirebaseImageManager
 import ie.setu.eventJournal.ui.auth.LoggedInViewModel
 import ie.setu.eventJournal.ui.auth.Login
 import ie.setu.eventJournal.utils.readImageUri
-import ie.setu.eventJournal.utils.showImagePicker
+import ie.setu.eventJournal.utils.showImagePicker2
 import timber.log.Timber
 
 class Home : AppCompatActivity() {
@@ -89,12 +89,12 @@ class Home : AppCompatActivity() {
         headerView = homeBinding.navView.getHeaderView(0)
         navHeaderBinding = NavHeaderBinding.bind(headerView)
         navHeaderBinding.navHeaderImage.setOnClickListener {
-            showImagePicker(intentLauncher)
+            showImagePicker2(intentLauncher)
         }
     }
 
     private fun updateNavHeader(currentUser: FirebaseUser) {
-        FirebaseImageManager.imageUri.observe(this) { result ->
+        FirebaseImageManager.getProfileImageUri().observe(this) { result ->
             if (result == Uri.EMPTY) {
                 Timber.i("DX NO Existing imageUri")
                 if (currentUser.photoUrl != null) {
@@ -107,7 +107,7 @@ class Home : AppCompatActivity() {
                     )
                 } else {
                     Timber.i("DX Loading Existing Default imageUri")
-                    FirebaseImageManager.updateDefaultImage(
+                    FirebaseImageManager.updateDefaultProfilePicture(
                         currentUser.uid,
                         R.drawable.ic_launcher_homer,
                         navHeaderBinding.navHeaderImage
@@ -117,7 +117,7 @@ class Home : AppCompatActivity() {
                 Timber.i("DX Loading Existing imageUri")
                 FirebaseImageManager.updateUserImage(
                     currentUser.uid,
-                    FirebaseImageManager.imageUri.value,
+                    FirebaseImageManager.getProfileImageUri().value,
                     navHeaderBinding.navHeaderImage, false
                 )
             }    }

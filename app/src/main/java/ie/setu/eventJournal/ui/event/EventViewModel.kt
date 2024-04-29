@@ -18,7 +18,7 @@ class EventViewModel : ViewModel() {
     fun addEvent(firebaseUser: MutableLiveData<FirebaseUser>,
                  event: EventModel) {
         status.value = try {
-            event.profilepic = FirebaseImageManager.imageUri.value.toString()
+            event.image = FirebaseImageManager.getEventImageUri().value.toString()
             FirebaseDBManager.create(firebaseUser,event)
             true
         } catch (e: IllegalArgumentException) {

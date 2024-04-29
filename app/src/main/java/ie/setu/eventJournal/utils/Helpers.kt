@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.FragmentActivity
@@ -52,7 +53,14 @@ fun customTransformation() : Transformation =
         .oval(false)
         .build()
 
-fun showImagePicker(intentLauncher : ActivityResultLauncher<Intent>) {
+fun showImagePicker(intentLauncher: ActivityResultLauncher<Intent>, view: View?) {
+    var chooseFile = Intent(Intent.ACTION_OPEN_DOCUMENT)
+    chooseFile.type = "image/*"
+    chooseFile = Intent.createChooser(chooseFile, R.string.select_profile_image.toString())
+    intentLauncher.launch(chooseFile)
+}
+
+fun showImagePicker2(intentLauncher: ActivityResultLauncher<Intent>) {
     var chooseFile = Intent(Intent.ACTION_OPEN_DOCUMENT)
     chooseFile.type = "image/*"
     chooseFile = Intent.createChooser(chooseFile, R.string.select_profile_image.toString())
