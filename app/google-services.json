@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "469289401091-6rqua40jj6s06g7aak4d6pul8vbt42o5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ie.setu.eventJournal",
+            "certificate_hash": "b8e53cac6ef2b3c2fb6139575dcb80a52ee789c4"
+          }
+        },
+        {
           "client_id": "469289401091-fk7hd1f68ec7uvp9o7fksv7cg0leeqao.apps.googleusercontent.com",
           "client_type": 3
         }
