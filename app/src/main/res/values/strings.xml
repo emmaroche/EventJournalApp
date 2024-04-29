@@ -43,6 +43,7 @@
     <string name="update">Update</string>
     <string name="delete">Delete</string>
 
+
     <string name="messageLoading">Please Wait while the Events are Loading...</string>
 
     <!-- START Firebase Resources-->
@@ -68,4 +69,5 @@
     <string name="emailpassword_status_fmt">Email User: %1$s (verified: %2$b)</string>
     <string name="emailpassword_title_text">Please Login Below</string>
     <string name="client_id">469289401091-fk7hd1f68ec7uvp9o7fksv7cg0leeqao.apps.googleusercontent.com</string>
+    <string name="select_profile_image">Select Profile Picture</string>
 </resources>

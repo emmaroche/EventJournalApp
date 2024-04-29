@@ -2,6 +2,7 @@ package ie.setu.eventJournal.models
 
 import android.os.Parcelable
 import com.google.firebase.database.Exclude
+import com.google.firebase.database.IgnoreExtraProperties
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -15,6 +16,7 @@ import kotlinx.parcelize.Parcelize
 //    var upvotes: Int = 0,
 //    val email: String = "joe@bloggs.com") : Parcelable
 
+@IgnoreExtraProperties
 @Parcelize
 data class EventModel(
     var uid: String = "N/A",
@@ -24,6 +26,7 @@ data class EventModel(
     var date: String = "n/a",
     var time: String = "n/a",
     var amount: Int = 0,
+    var profilepic: String = "",
     val email: String = "joe@bloggs.com")
     : Parcelable
 {
@@ -37,6 +40,7 @@ data class EventModel(
             "date" to date,
             "time" to time,
             "amount" to amount,
+            "profilepic" to profilepic,
             "email" to email
         )
     }

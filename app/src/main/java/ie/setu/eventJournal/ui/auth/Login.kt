@@ -1,6 +1,7 @@
 package ie.setu.eventJournal.ui.auth
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Toast
@@ -19,10 +20,12 @@ import ie.setu.eventJournal.databinding.LoginBinding
 import ie.setu.eventJournal.ui.home.Home
 import timber.log.Timber
 import androidx.lifecycle.Observer
+import com.google.android.gms.common.SignInButton
 
 class Login : AppCompatActivity() {
 
-    // Google authentication reference: https://www.youtube.com/watch?v=-tCIsI7aZGk
+    // Google authentication reference  : https://www.youtube.com/watch?v=-tCIsI7aZGk
+    // Note: I added google auth before lab steps came out which is why I have continued with this alternative approach
 
     private lateinit var loginRegisterViewModel: LoginRegisterViewModel
     private lateinit var loginBinding: LoginBinding
@@ -49,22 +52,33 @@ class Login : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
 
         loginBinding.emailSignInButton.setOnClickListener {
-            signIn(loginBinding.fieldEmail.text.toString(), loginBinding.fieldPassword.text.toString())
+            signIn(
+                loginBinding.fieldEmail.text.toString(),
+                loginBinding.fieldPassword.text.toString()
+            )
         }
 
         loginBinding.emailCreateAccountButton.setOnClickListener {
-            createAccount(loginBinding.fieldEmail.text.toString(), loginBinding.fieldPassword.text.toString())
+            createAccount(
+                loginBinding.fieldEmail.text.toString(),
+                loginBinding.fieldPassword.text.toString()
+            )
         }
 
         loginBinding.googleSignInButton.setOnClickListener {
             signInWithGoogle()
         }
+
+        loginBinding.googleSignInButton.setSize(SignInButton.SIZE_WIDE);
+        loginBinding.googleSignInButton.setColorScheme(SignInButton.COLOR_LIGHT);
+        loginBinding.googleSignInButton.setBackgroundColor(Color.WHITE);
+
     }
 
     //Required to exit app from Login Screen - must investigate this further
     override fun onBackPressed() {
         super.onBackPressed()
-        Toast.makeText(this,"Click again to Close App...",Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Click again to Close App...", Toast.LENGTH_LONG).show()
         finish()
     }
 
@@ -73,8 +87,10 @@ class Login : AppCompatActivity() {
         // Email and pass: Check if user is signed in (non-null) and update UI accordingly.
         loginRegisterViewModel = ViewModelProvider(this).get(LoginRegisterViewModel::class.java)
         loginRegisterViewModel.liveFirebaseUser.observe(this, Observer
-        { firebaseUser -> if (firebaseUser != null)
-            startActivity(Intent(this, Home::class.java)) })
+        { firebaseUser ->
+            if (firebaseUser != null)
+                startActivity(Intent(this, Home::class.java))
+        })
 
         loginRegisterViewModel.firebaseAuthManager.errorStatus.observe(this, Observer
         { status -> checkStatus(status) })
@@ -106,11 +122,13 @@ class Login : AppCompatActivity() {
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
-    private fun checkStatus(error:Boolean) {
+    private fun checkStatus(error: Boolean) {
         if (error)
-            Toast.makeText(this,
+            Toast.makeText(
+                this,
                 getString(R.string.auth_failed),
-                Toast.LENGTH_LONG).show()
+                Toast.LENGTH_LONG
+            ).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

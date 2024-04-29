@@ -3,6 +3,7 @@ package ie.setu.eventJournal.ui.report
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -94,6 +95,16 @@ class ReportFragment : Fragment(), EventClickListener {
 
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_report, menu)
+
+                val item = menu.findItem(R.id.toggleDonations) as MenuItem
+                item.setActionView(R.layout.togglebutton_layout)
+                val toggleDonations: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
+                toggleDonations.isChecked = false
+
+                toggleDonations.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) reportViewModel.loadAll()
+                    else reportViewModel.load()
+                }
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -105,7 +116,8 @@ class ReportFragment : Fragment(), EventClickListener {
     }
 
     private fun render(eventsList: ArrayList<EventModel>) {
-        fragBinding.recyclerView.adapter = EventAdapter(eventsList,this)
+        fragBinding.recyclerView.adapter = EventAdapter(eventsList,this,
+            reportViewModel.readOnly.value!!)
         if (eventsList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
             fragBinding.eventsNotFound.visibility = View.VISIBLE
@@ -117,14 +129,18 @@ class ReportFragment : Fragment(), EventClickListener {
 
     override fun onEventClick(event: EventModel) {
         val action = ReportFragmentDirections.actionReportFragmentToEventDetailFragment(event.uid)
-        findNavController().navigate(action)
+        if(!reportViewModel.readOnly.value!!)
+            findNavController().navigate(action)
     }
 
     private fun setSwipeRefresh() {
         fragBinding.swiperefresh.setOnRefreshListener {
             fragBinding.swiperefresh.isRefreshing = true
             showLoader(loader,"Downloading Events")
-            reportViewModel.load()
+            if(reportViewModel.readOnly.value!!)
+                reportViewModel.loadAll()
+            else
+                reportViewModel.load()
         }
     }
 

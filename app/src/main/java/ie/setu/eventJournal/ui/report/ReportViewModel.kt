@@ -19,15 +19,29 @@ class ReportViewModel : ViewModel() {
 
     var liveFirebaseUser = MutableLiveData<FirebaseUser>()
 
+    var readOnly = MutableLiveData(false)
+
     init { load() }
 
     fun load() {
         try {
+            readOnly.value = false
             FirebaseDBManager.findAll(liveFirebaseUser.value?.uid!!, eventsList)
             Timber.i("Report Load Success : ${eventsList.value.toString()}")
         }
         catch (e: Exception) {
             Timber.i("Report Load Error : ${e.toString()}")
+        }
+    }
+
+    fun loadAll() {
+        try {
+            readOnly.value = true
+            FirebaseDBManager.findAll(eventsList)
+            Timber.i("Report LoadAll Success : ${eventsList.value.toString()}")
+        }
+        catch (e: Exception) {
+            Timber.i("Report LoadAll Error : $e.message")
         }
     }
 
