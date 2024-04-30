@@ -2,11 +2,15 @@
     <string name="app_name">Event Journal App</string>
     <string name="eventTitle">Welcome!</string>
     <string name="eventSubtitle">Your Event Details</string>
-    <string name="eventButton">Add Event</string>
-    <string name="paypal">PayPal</string>
-    <string name="direct">Direct</string>
+    <string name="event_name">Event Name</string>
+    <string name="event_type">Event Type</string>
+    <string name="event_time">Event Time</string>
+    <string name="event_date">Event Date</string>
+    <string name="event_description">Event Description</string>
+    <string name="budget">Budget</string>
     <string name="amount">Amount</string>
-    <string name="total">Total so Far</string>
+    <string name="total">Total spent on events so far</string>
+    <string name="eventButton">Add Event</string>
     <string name="totalSoFar">$ %1$d</string>
     <string name="reportTitle">Event List</string>
     <string name="defaultAmount">00</string>
@@ -39,6 +43,7 @@
     <string name="update">Update</string>
     <string name="delete">Delete</string>
 
+
     <string name="messageLoading">Please Wait while the Events are Loading...</string>
 
     <!-- START Firebase Resources-->
@@ -63,4 +68,10 @@
     <string name="firebase_user_management">Firebase User Management</string>
     <string name="emailpassword_status_fmt">Email User: %1$s (verified: %2$b)</string>
     <string name="emailpassword_title_text">Please Login Below</string>
+    <string name="client_id">469289401091-fk7hd1f68ec7uvp9o7fksv7cg0leeqao.apps.googleusercontent.com</string>
+    <string name="select_profile_image">Select Profile Picture</string>
+    <string name="button_addImage">Add Image</string>
+    <string name="button_location">Add Location</string>
+    <string name="change_event_image">Change Image\n</string>
+    <string name="action_location">Location</string>
 </resources>

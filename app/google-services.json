@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "469289401091",
+    "firebase_url": "https://event-journal-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "event-journal",
     "storage_bucket": "event-journal.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "ie.setu.eventJournal"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "469289401091-6rqua40jj6s06g7aak4d6pul8vbt42o5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ie.setu.eventJournal",
+            "certificate_hash": "b8e53cac6ef2b3c2fb6139575dcb80a52ee789c4"
+          }
+        },
+        {
+          "client_id": "469289401091-fk7hd1f68ec7uvp9o7fksv7cg0leeqao.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCv6aCj2OZAB65TAzHktjRyvtB4OuSp-4s"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469289401091-fk7hd1f68ec7uvp9o7fksv7cg0leeqao.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
