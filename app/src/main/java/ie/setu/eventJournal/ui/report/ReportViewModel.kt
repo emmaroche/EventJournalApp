@@ -1,5 +1,6 @@
 package ie.setu.eventJournal.ui.report
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +14,10 @@ class ReportViewModel : ViewModel() {
 
     private val eventsList =
         MutableLiveData<List<EventModel>>()
+
+    // Reference to help with fav button: https://www.geeksforgeeks.org/togglebutton-in-kotlin/ & https://stackoverflow.com/questions/61429820/android-check-uncheck-switch-button-through-databinding-with-livedata
+    private val _eventChanged = MutableLiveData<EventModel>()
+    val eventChanged: LiveData<EventModel> = _eventChanged
 
     val observableEventsList: LiveData<List<EventModel>>
         get() = eventsList
@@ -44,6 +49,13 @@ class ReportViewModel : ViewModel() {
             Timber.i("Report LoadAll Error : $e.message")
         }
     }
+
+    fun toggleFavorite(event: EventModel) {
+        event.isFavourite = !event.isFavourite
+        FirebaseDBManager.update(liveFirebaseUser.value?.uid!!, event.uid, event)
+        _eventChanged.value = event
+    }
+
 
     fun delete(userid: String, id: String) {
         try {
