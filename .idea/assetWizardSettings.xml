@@ -306,7 +306,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/favorite_border/baseline_favorite_border_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/manage_search/baseline_manage_search_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -316,8 +316,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="6096ba" />
-                            <entry key="outputName" value="ic_star_empty" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_search" />
                           </map>
                         </option>
                       </PersistentState>

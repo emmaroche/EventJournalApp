@@ -67,4 +67,3 @@ class ReportViewModel : ViewModel() {
         }
     }
 }
-

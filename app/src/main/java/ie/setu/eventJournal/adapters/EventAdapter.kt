@@ -9,6 +9,7 @@ import ie.setu.eventJournal.databinding.CardEventBinding
 import ie.setu.eventJournal.models.EventModel
 import androidx.core.net.toUri
 import ie.setu.eventJournal.utils.customTransformation
+import timber.log.Timber
 
 
 interface EventClickListener {
@@ -16,7 +17,7 @@ interface EventClickListener {
     fun onFavouriteClick(event: EventModel)
 }
 class EventAdapter constructor(
-    private var events: ArrayList<EventModel>,
+    var events: ArrayList<EventModel>,
     private val listener: EventClickListener,
     private val readOnly: Boolean
 ) : RecyclerView.Adapter<EventAdapter.MainHolder>() {
@@ -36,12 +37,18 @@ class EventAdapter constructor(
         } else {
             holder.binding.imagefavourite.setImageResource(R.drawable.ic_star_empty)
         }
+        Timber.d("EventAdapter", "onBindViewHolder called for position: $position")
     }
-
 
     fun removeAt(position: Int) {
         events.removeAt(position)
         notifyItemRemoved(position)
+    }
+
+    fun filterList(filteredList: ArrayList<EventModel>) {
+        events = filteredList
+        notifyDataSetChanged()
+
     }
 
     override fun getItemCount(): Int = events.size
