@@ -27,6 +27,8 @@ object FirebaseDBManager : EventStore {
                     val children = snapshot.children
                     children.forEach {
                         val event = it.getValue(EventModel::class.java)
+                        // Make sure the fav icon does not reset to false on refresh
+                        event?.isFavourite = it.child("isFavourite").getValue(Boolean::class.java) ?: false
                         localList.add(event!!)
                     }
                     database.child("events")
@@ -50,6 +52,8 @@ object FirebaseDBManager : EventStore {
                     val children = snapshot.children
                     children.forEach {
                         val event = it.getValue(EventModel::class.java)
+                        // Make sure the fav icon does not reset to false on refresh
+                        event?.isFavourite = it.child("isFavourite").getValue(Boolean::class.java) ?: false
                         localList.add(event!!)
                     }
                     database.child("user-events").child(userid)
