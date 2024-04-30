@@ -31,7 +31,7 @@ class EventAdapter constructor(
         val event = events[position]
         holder.bind(event, listener)
 
-        // Update fav icon based on the local favorite status
+        // Update fav icon based on true or false status
         if (event.isFavourite) {
             holder.binding.imagefavourite.setImageResource(R.drawable.ic_star_filled)
         } else {
@@ -62,7 +62,7 @@ class EventAdapter constructor(
             binding.root.tag = event
             binding.event = event
 
-            // Load the image URI into imageIcon ImageView using Picasso
+            // Load the image URI into imageIcon using Picasso
             Picasso.get()
                 .load(event.image.toUri())
                 .resize(200, 200)

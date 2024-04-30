@@ -39,8 +39,6 @@ class ReportFragment : Fragment(), EventClickListener {
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
     private lateinit var eventAdapter: EventAdapter
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -60,11 +58,8 @@ class ReportFragment : Fragment(), EventClickListener {
         }
         showLoader(loader,"Downloading Events")
 
-
-        // Initialize the adapter
         eventAdapter = EventAdapter(ArrayList(), this, reportViewModel.readOnly.value!!)
 
-        // Set the adapter on the RecyclerView
         fragBinding.recyclerView.adapter = eventAdapter
 
         reportViewModel.observableEventsList.observe(viewLifecycleOwner, Observer {
@@ -129,7 +124,7 @@ class ReportFragment : Fragment(), EventClickListener {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_report, menu)
 
-                // Toggle Events
+                // Toggle Event
                 val item = menu.findItem(R.id.toggleEvents) as MenuItem
                 item.setActionView(R.layout.togglebutton_layout)
                 val toggleEvents: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
@@ -140,7 +135,8 @@ class ReportFragment : Fragment(), EventClickListener {
                     else reportViewModel.load()
                 }
 
-                // Search Events
+                // Search Event
+                // Reference to get search bar to work: https://www.geeksforgeeks.org/android-searchview-with-recyclerview-using-kotlin/
                 val searchManager =
                     requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
                 val searchItem = menu.findItem(R.id.action_search)
@@ -188,10 +184,41 @@ class ReportFragment : Fragment(), EventClickListener {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 // Validate and handle the selected menu item
-                return NavigationUI.onNavDestinationSelected(menuItem,
-                    requireView().findNavController())
+                return when (menuItem.itemId) {
+                    R.id.delete_all -> {
+                        val builder = AlertDialog.Builder(requireContext())
+                        builder.setTitle("Delete All Events")
+                        builder.setMessage("Are you sure you want to delete all events?")
+                        builder.setIcon(R.drawable.baseline_warning)
+
+                        builder.setPositiveButton("Yes") { _, _ ->
+                            Toast.makeText(
+                                requireContext(),
+                                "Deleting all events",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            reportViewModel.deleteAllEvents()
+                        }
+
+                        builder.setNegativeButton("Cancel") { _, _ ->
+                            Toast.makeText(requireContext(), "Delete Cancelled", Toast.LENGTH_LONG)
+                                .show()
+                        }
+
+                        val alertDialog: AlertDialog = builder.create()
+                        alertDialog.setCancelable(false)
+                        alertDialog.show()
+                        true
+                    }
+
+                    else -> NavigationUI.onNavDestinationSelected(
+                        menuItem,
+                        requireView().findNavController()
+                    )
+                }
             }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+            }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
     }
 
 
@@ -262,6 +289,7 @@ class ReportFragment : Fragment(), EventClickListener {
             }
         })
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null

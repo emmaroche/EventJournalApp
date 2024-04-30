@@ -1,6 +1,5 @@
 package ie.setu.eventJournal.ui.report
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +7,6 @@ import com.google.firebase.auth.FirebaseUser
 import ie.setu.eventJournal.firebase.FirebaseDBManager
 import ie.setu.eventJournal.models.EventModel
 import timber.log.Timber
-import java.lang.Exception
 
 class ReportViewModel : ViewModel() {
 
@@ -42,7 +40,7 @@ class ReportViewModel : ViewModel() {
     fun loadAll() {
         try {
             readOnly.value = true
-            FirebaseDBManager.findAll(eventsList)
+            FirebaseDBManager.findAllFavourites(liveFirebaseUser.value?.uid!!, eventsList)
             Timber.i("Report LoadAll Success : ${eventsList.value.toString()}")
         }
         catch (e: Exception) {
@@ -56,7 +54,6 @@ class ReportViewModel : ViewModel() {
         _eventChanged.value = event
     }
 
-
     fun delete(userid: String, id: String) {
         try {
             FirebaseDBManager.delete(userid,id)
@@ -64,6 +61,16 @@ class ReportViewModel : ViewModel() {
         }
         catch (e: Exception) {
             Timber.i("Report Delete Error : $e.message")
+        }
+    }
+
+    fun deleteAllEvents() {
+        try {
+            FirebaseDBManager.deleteAllEvents(liveFirebaseUser.value?.uid!!)
+            Timber.i("Report Delete All Events Success")
+        }
+        catch (e: Exception) {
+            Timber.i("Report Delete All Events Error : $e.message")
         }
     }
 }

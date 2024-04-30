@@ -75,4 +75,5 @@
     <string name="change_event_image">Change Image\n</string>
     <string name="action_location">Location</string>
     <string name="search">Search\n</string>
+    <string name="delete_all_events">Delete All Events</string>
 </resources>
