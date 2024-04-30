@@ -1,11 +1,13 @@
 package ie.setu.eventJournal.ui.report
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.MenuHost
@@ -198,6 +200,7 @@ class ReportFragment : Fragment(), EventClickListener {
                                 Toast.LENGTH_LONG
                             ).show()
                             reportViewModel.deleteAllEvents()
+                            reportViewModel.load()
                         }
 
                         builder.setNegativeButton("Cancel") { _, _ ->
@@ -220,8 +223,6 @@ class ReportFragment : Fragment(), EventClickListener {
             }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
     }
-
-
 
     private fun render(eventsList: ArrayList<EventModel>) {
         eventAdapter = EventAdapter(eventsList, this, reportViewModel.readOnly.value!!)
