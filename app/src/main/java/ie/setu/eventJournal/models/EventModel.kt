@@ -19,7 +19,8 @@ data class EventModel(
     var image: String = "",
     val email: String = "joe@bloggs.com",
     var latitude: Double = 0.0,
-    var longitude: Double = 0.0)
+    var longitude: Double = 0.0,
+    var isFavourite: Boolean = false)
     : Parcelable
 {
     @Exclude
@@ -36,7 +37,8 @@ data class EventModel(
             "image" to image,
             "email" to email,
             "latitude" to latitude,
-            "longitude" to longitude
+            "longitude" to longitude,
+            "isFavourite" to isFavourite
         )
     }
 }

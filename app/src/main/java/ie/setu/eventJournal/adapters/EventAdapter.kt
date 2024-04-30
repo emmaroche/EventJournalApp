@@ -13,8 +13,8 @@ import ie.setu.eventJournal.utils.customTransformation
 
 interface EventClickListener {
     fun onEventClick(event: EventModel)
+    fun onFavouriteClick(event: EventModel)
 }
-
 class EventAdapter constructor(
     private var events: ArrayList<EventModel>,
     private val listener: EventClickListener,
@@ -29,7 +29,15 @@ class EventAdapter constructor(
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val event = events[position]
         holder.bind(event, listener)
+
+        // Update fav icon based on the local favorite status
+        if (event.isFavourite) {
+            holder.binding.imagefavourite.setImageResource(R.drawable.ic_star_filled)
+        } else {
+            holder.binding.imagefavourite.setImageResource(R.drawable.ic_star_empty)
+        }
     }
+
 
     fun removeAt(position: Int) {
         events.removeAt(position)
@@ -54,6 +62,13 @@ class EventAdapter constructor(
                 .transform(customTransformation())
                 .centerCrop()
                 .into(binding.imageIcon)
+
+            // Set onClickListener for the fav button
+            binding.imagefavourite.setOnClickListener {
+                if (!readOnlyRow) {
+                    listener.onFavouriteClick(event)
+                }
+            }
 
             binding.root.setOnClickListener { listener.onEventClick(event) }
             binding.executePendingBindings()

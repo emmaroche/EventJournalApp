@@ -86,6 +86,22 @@ class ReportFragment : Fragment(), EventClickListener {
         return root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        reportViewModel.eventChanged.observe(viewLifecycleOwner) { changedEvent ->
+            // Find the position of the changed event in the list
+            val position = reportViewModel.observableEventsList.value?.indexOfFirst { it.uid == changedEvent.uid }
+            position?.let { pos ->
+                // Notify the adapter that the item at the changed position needs to be updated
+                fragBinding.recyclerView.adapter?.notifyItemChanged(pos)
+            }
+        }
+
+        // Initialize the EventAdapter with the list of events and other parameters
+        fragBinding.recyclerView.adapter = EventAdapter(ArrayList(), this, reportViewModel.readOnly.value!!)
+    }
+
 
     private fun setupMenu() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
@@ -116,6 +132,7 @@ class ReportFragment : Fragment(), EventClickListener {
     }
 
     private fun render(eventsList: ArrayList<EventModel>) {
+        fragBinding.recyclerView.adapter = EventAdapter(eventsList, this, reportViewModel.readOnly.value!!)
         fragBinding.recyclerView.adapter = EventAdapter(eventsList,this,
             reportViewModel.readOnly.value!!)
         if (eventsList.isEmpty()) {
@@ -131,6 +148,10 @@ class ReportFragment : Fragment(), EventClickListener {
         val action = ReportFragmentDirections.actionReportFragmentToEventDetailFragment(event.uid)
         if(!reportViewModel.readOnly.value!!)
             findNavController().navigate(action)
+    }
+
+    override fun onFavouriteClick(event: EventModel) {
+        reportViewModel.toggleFavorite(event)
     }
 
     private fun setSwipeRefresh() {
@@ -151,16 +172,14 @@ class ReportFragment : Fragment(), EventClickListener {
 
     override fun onResume() {
         super.onResume()
-        showLoader(loader,"Downloading Events")
+        showLoader(loader, "Downloading Events")
         loggedInViewModel.liveFirebaseUser.observe(viewLifecycleOwner, Observer { firebaseUser ->
             if (firebaseUser != null) {
                 reportViewModel.liveFirebaseUser.value = firebaseUser
                 reportViewModel.load()
             }
         })
-        //hideLoader(loader)
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null
