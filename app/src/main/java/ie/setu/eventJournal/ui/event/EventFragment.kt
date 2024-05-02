@@ -41,6 +41,7 @@ class EventFragment : Fragment() {
     private val reportViewModel: ReportViewModel by activityViewModels()
     private val loggedInViewModel: LoggedInViewModel by activityViewModels()
     private val mapsViewModel: MapsViewModel by activityViewModels()
+    private var selectedImageUri: Uri? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _fragBinding = FragmentEventBinding.inflate(inflater, container, false)
@@ -54,12 +55,10 @@ class EventFragment : Fragment() {
 
         fragBinding.progressBar.max = 10000
 
-        // Click listener for chooseImage button
         fragBinding.chooseImage.setOnClickListener {
             doSelectImage()
         }
 
-        // Register image picker callback
         registerImagePickerCallback()
 
         fragBinding.eventButton.setOnClickListener {
@@ -174,7 +173,10 @@ class EventFragment : Fragment() {
             loggedInViewModel.liveFirebaseUser.value!!.uid,
             bitmapFromUri(imageUri),
             true
-        )
+        ).observe(viewLifecycleOwner, Observer { imageUrl ->
+            // Store the download URL of the uploaded image
+            selectedImageUri = Uri.parse(imageUrl)
+        })
     }
 
     private fun bitmapFromUri(uri: Uri): Bitmap {

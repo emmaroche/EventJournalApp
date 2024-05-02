@@ -7,6 +7,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import android.widget.ToggleButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SwitchCompat
@@ -129,7 +130,7 @@ class ReportFragment : Fragment(), EventClickListener {
                 // Toggle Event
                 val item = menu.findItem(R.id.toggleEvents) as MenuItem
                 item.setActionView(R.layout.togglebutton_layout)
-                val toggleEvents: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
+                val toggleEvents: ToggleButton = item.actionView!!.findViewById(R.id.favouritesToggleButton)
                 toggleEvents.isChecked = false
 
                 toggleEvents.setOnCheckedChangeListener { _, isChecked ->
@@ -138,7 +139,7 @@ class ReportFragment : Fragment(), EventClickListener {
                 }
 
                 // Search Event
-                // Reference to get search bar to work: https://www.geeksforgeeks.org/android-searchview-with-recyclerview-using-kotlin/
+                // Reference used to help with implementing search bar to work: https://www.geeksforgeeks.org/android-searchview-with-recyclerview-using-kotlin/
                 val searchManager =
                     requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
                 val searchItem = menu.findItem(R.id.action_search)
@@ -162,7 +163,7 @@ class ReportFragment : Fragment(), EventClickListener {
                     }
                 })
 
-                // Reference to get toggle to hide when search is active: https://stackoverflow.com/questions/7397391/event-for-handling-the-focus-of-the-edittext
+                // Reference used to help with getting the toggle fav button to hide when search is active: https://stackoverflow.com/questions/7397391/event-for-handling-the-focus-of-the-edittext
                 searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
                     // Enable/Disable the toggle button when the search view is not focused// Disable the toggle button when the search view is focused
                     toggleEvents.post {
@@ -170,7 +171,7 @@ class ReportFragment : Fragment(), EventClickListener {
                     }
                 }
 
-                // Reference to get events to reload when search bar was closed: https://stackoverflow.com/questions/52765209/menuitem-setonactionexpandlistener-with-kotlin
+                //  Reference used to help with with getting events to reload when search bar was closed: https://stackoverflow.com/questions/52765209/menuitem-setonactionexpandlistener-with-kotlin
                 searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
                     override fun onMenuItemActionExpand(p0: MenuItem): Boolean {
                         return true
@@ -246,22 +247,6 @@ class ReportFragment : Fragment(), EventClickListener {
 
     override fun onFavouriteClick(event: EventModel) {
         reportViewModel.toggleFavorite(event)
-    }
-
-    private fun filter(text: String) {
-        val filteredList: ArrayList<EventModel> = ArrayList()
-
-        for (item in reportViewModel.observableEventsList.value!!) {
-            if (item.type.lowercase(Locale.ROOT).contains(text.lowercase(Locale.ROOT))) {
-                filteredList.add(item)
-            }
-        }
-        if (filteredList.isEmpty()) {
-            Toast.makeText(context, "No Data Found..", Toast.LENGTH_SHORT).show()
-        } else {
-            eventAdapter.filterList(filteredList)
-            fragBinding.recyclerView.invalidate()
-        }
     }
 
     private fun setSwipeRefresh() {

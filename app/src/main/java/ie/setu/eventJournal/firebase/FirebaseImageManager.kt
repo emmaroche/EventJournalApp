@@ -63,7 +63,8 @@ object FirebaseImageManager {
         }
     }
 
-    fun uploadEventPictureToFirebase(userid: String, bitmap: Bitmap, updating: Boolean) {
+    fun uploadEventPictureToFirebase(userid: String, bitmap: Bitmap, updating: Boolean): MutableLiveData<String> {
+        val imageUrlLiveData = MutableLiveData<String>()
         val imageRef = storage.child("event-photos").child("${userid}.jpg")
         val baos = ByteArrayOutputStream()
         lateinit var uploadTask: UploadTask
@@ -78,6 +79,7 @@ object FirebaseImageManager {
                     ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
                         eventImageUri.value = task.result!!
                         FirebaseDBManager.updateLocationImage(userid, eventImageUri.value.toString())
+                        imageUrlLiveData.value = task.result.toString()
                     }
                 }
             }
@@ -87,11 +89,12 @@ object FirebaseImageManager {
                 ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
                     eventImageUri.value = task.result!!
                     FirebaseDBManager.updateLocationImage(userid, eventImageUri.value.toString())
+                    imageUrlLiveData.value = task.result.toString()
                 }
             }
         }
+        return imageUrlLiveData
     }
-
     fun updateUserImage(userid: String, imageUri: Uri?, imageView: ImageView, updating: Boolean) {
         Picasso.get().load(imageUri)
             .resize(200, 200)

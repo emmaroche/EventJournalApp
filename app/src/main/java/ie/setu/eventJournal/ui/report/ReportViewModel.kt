@@ -13,7 +13,7 @@ class ReportViewModel : ViewModel() {
     private val eventsList =
         MutableLiveData<List<EventModel>>()
 
-    // Reference to help with fav button: https://www.geeksforgeeks.org/togglebutton-in-kotlin/ & https://stackoverflow.com/questions/61429820/android-check-uncheck-switch-button-through-databinding-with-livedata
+    // Reference used to help with implementing the fav button: https://www.geeksforgeeks.org/togglebutton-in-kotlin/ & https://stackoverflow.com/questions/61429820/android-check-uncheck-switch-button-through-databinding-with-livedata
     private val _eventChanged = MutableLiveData<EventModel>()
     val eventChanged: LiveData<EventModel> = _eventChanged
 

@@ -47,7 +47,7 @@ class Home : AppCompatActivity() {
     private val mapsViewModel : MapsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Resource used to implement splash screen: https://developer.android.com/training/wearables/apps/splash-screen
+        // Reference used to help with implementing splash screen: https://developer.android.com/training/wearables/apps/splash-screen
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
