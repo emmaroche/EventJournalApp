@@ -27,9 +27,37 @@ object FirebaseDBManager : EventStore {
                     val children = snapshot.children
                     children.forEach {
                         val event = it.getValue(EventModel::class.java)
+                        // Make sure the fav icon does not reset to false on refresh
+                        event?.isFavourite = it.child("isFavourite").getValue(Boolean::class.java) ?: false
                         localList.add(event!!)
                     }
                     database.child("events")
+                        .removeEventListener(this)
+
+                    eventsList.value = localList
+                }
+            })
+    }
+
+    override fun findAllFavourites(userid: String, eventsList: MutableLiveData<List<EventModel>>) {
+
+        database.child("user-events").child(userid.toString())
+            .orderByChild("isFavourite").equalTo(true)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase Event error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<EventModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val event = it.getValue(EventModel::class.java)
+                        // Make sure the fav icon does not reset to false on refresh
+                        event?.isFavourite = it.child("isFavourite").getValue(Boolean::class.java) ?: false
+                        localList.add(event!!)
+                    }
+                    database.child("user-events").child(userid.toString())
                         .removeEventListener(this)
 
                     eventsList.value = localList
@@ -50,6 +78,8 @@ object FirebaseDBManager : EventStore {
                     val children = snapshot.children
                     children.forEach {
                         val event = it.getValue(EventModel::class.java)
+                        // Make sure the fav icon does not reset to false on refresh
+                        event?.isFavourite = it.child("isFavourite").getValue(Boolean::class.java) ?: false
                         localList.add(event!!)
                     }
                     database.child("user-events").child(userid)
@@ -99,6 +129,15 @@ object FirebaseDBManager : EventStore {
         database.updateChildren(childDelete)
     }
 
+    override fun deleteAllEvents(userid: String) {
+
+        val childDelete: MutableMap<String, Any?> = HashMap()
+        childDelete["/events"] = null
+        childDelete["/user-events/$userid"] = null
+
+        database.updateChildren(childDelete)
+    }
+
     override fun update(userid: String, eventid: String, event: EventModel) {
 
         val eventValues = event.toMap()
@@ -125,26 +164,4 @@ object FirebaseDBManager : EventStore {
     fun updateLocationImage(eventId: String, imageUri: String) {
         database.child("events").child(eventId).child("image").setValue(imageUri)
     }
-
-
-//    fun updateImageRef(userid: String, imageUri: String) {
-//
-//        val userEvents = database.child("user-events").child(userid)
-//        val allEvents = database.child("events")
-//
-//        userEvents.addListenerForSingleValueEvent(
-//            object : ValueEventListener {
-//                override fun onCancelled(error: DatabaseError) {}
-//                override fun onDataChange(snapshot: DataSnapshot) {
-//                    snapshot.children.forEach {
-//                        //Update Users imageUri
-//                        it.ref.child("image").setValue(imageUri)
-//                        //Update all events that match 'it'
-//                        val event = it.getValue(EventModel::class.java)
-//                        allEvents.child(event!!.uid!!)
-//                            .child("image").setValue(imageUri)
-//                    }
-//                }
-//            })
-//    }
 }

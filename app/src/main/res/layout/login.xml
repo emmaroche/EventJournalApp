@@ -23,6 +23,12 @@
             android:src="@drawable/logo" />
 
         <TextView
+            android:id="@+id/status"
+            style="@style/ThemeOverlay.MyTextDetail"
+            android:text="@string/signed_out"
+            android:textColor="@color/color_primary" />
+
+        <TextView
             android:id="@+id/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,12 +36,6 @@
             android:text="@string/emailpassword_title_text"
             android:textColor="@color/color_primary"
             android:theme="@style/ThemeOverlay.MyTitleText" />
-
-        <TextView
-            android:id="@+id/status"
-            style="@style/ThemeOverlay.MyTextDetail"
-            android:text="@string/signed_out"
-            android:textColor="@color/color_primary" />
 
         <TextView
             android:id="@+id/detail"
@@ -85,7 +85,8 @@
             android:layout_below="@+id/emailPasswordFields"
             android:orientation="horizontal"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp">
 
             <Button
                 android:id="@+id/emailSignInButton"
@@ -151,26 +152,6 @@
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
 
         </LinearLayout>
-
-        <!-- Google Sign-In Button -->
-<!--        <LinearLayout-->
-<!--            android:id="@+id/googleSignInLayout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@id/emailPasswordButtons"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:paddingLeft="16dp"-->
-<!--            android:paddingRight="16dp">-->
-
-<!--            <Button-->
-<!--                android:id="@+id/googleSignInButton"-->
-<!--                style="@style/Widget.AppCompat.Button.Colored"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Sign in with Google"-->
-<!--                android:theme="@style/ThemeOverlay.MyDarkButton" />-->
-
-<!--        </LinearLayout>-->
 
     </RelativeLayout>
 
