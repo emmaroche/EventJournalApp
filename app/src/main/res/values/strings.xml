@@ -80,4 +80,20 @@
     <string name="update_event">Update</string>
     <string name="delete_event">Delete</string>
     <string name="amount_spent">Total Spent on this Event</string>
+
+    <string-array name="eventTypesArray">
+        <item>Wedding</item>
+        <item>Holiday</item>
+        <item>Birthday Party</item>
+        <item>Conference</item>
+        <item>Sport</item>
+        <item>Concert</item>
+        <item>Graduation</item>
+        <item>Corporate Event</item>
+        <item>Anniversary</item>
+        <item>Festival</item>
+        <item>Exhibition</item>
+        <item>Workshops</item>
+        <item>Other</item>
+    </string-array>
 </resources>
