@@ -40,7 +40,7 @@
     <fragment
         android:id="@+id/eventDetailFragment"
         android:name="ie.setu.eventJournal.ui.detail.EventDetailFragment"
-        android:label="Event Detail"
+        android:label="Event Details"
         tools:layout="@layout/fragment_event_detail" >
         <action
             android:id="@+id/action_eventDetailFragment_to_reportFragment"

@@ -4,11 +4,13 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/toggleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:theme="@style/toggleStyle"
+    <ToggleButton
+        android:id="@+id/favouritesToggleButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/favourite_toggle_selector"
+        android:textOn=""
+        android:textOff=""
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 </RelativeLayout>

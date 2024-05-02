@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 
 import android.os.Bundle
 import android.view.*
+import android.widget.ToggleButton
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -108,7 +109,7 @@ class MapsFragment : Fragment() {
 
                 val item = menu.findItem(R.id.toggleEvents) as MenuItem
                 item.setActionView(R.layout.togglebutton_layout)
-                val toggleEvents: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
+                val toggleEvents: ToggleButton = item.actionView!!.findViewById(R.id.favouritesToggleButton)
                 toggleEvents.isChecked = false
 
                 toggleEvents.setOnCheckedChangeListener { _, isChecked ->
