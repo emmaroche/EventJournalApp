@@ -15,29 +15,29 @@ object FirebaseDBManager : EventStore {
 
     var database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
-    override fun findAll(eventsList: MutableLiveData<List<EventModel>>) {
-        database.child("user-events")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(error: DatabaseError) {
-                    Timber.i("Firebase Event error : ${error.message}")
-                }
-
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val localList = ArrayList<EventModel>()
-                    val children = snapshot.children
-                    children.forEach {
-                        val event = it.getValue(EventModel::class.java)
-                        // Make sure the fav icon does not reset to false on refresh
-                        event?.isFavourite = it.child("isFavourite").getValue(Boolean::class.java) ?: false
-                        localList.add(event!!)
-                    }
-                    database.child("user-events")
-                        .removeEventListener(this)
-
-                    eventsList.value = localList
-                }
-            })
-    }
+//    override fun findAll(eventsList: MutableLiveData<List<EventModel>>) {
+//        database.child("events")
+//            .addValueEventListener(object : ValueEventListener {
+//                override fun onCancelled(error: DatabaseError) {
+//                    Timber.i("Firebase Event error : ${error.message}")
+//                }
+//
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    val localList = ArrayList<EventModel>()
+//                    val children = snapshot.children
+//                    children.forEach {
+//                        val event = it.getValue(EventModel::class.java)
+//                        // Make sure the fav icon does not reset to false on refresh
+//                        event?.isFavourite = it.child("isFavourite").getValue(Boolean::class.java) ?: false
+//                        localList.add(event!!)
+//                    }
+//                    database.child("events")
+//                        .removeEventListener(this)
+//
+//                    eventsList.value = localList
+//                }
+//            })
+//    }
 
     override fun findAllFavourites(userid: String, eventsList: MutableLiveData<List<EventModel>>) {
 
@@ -105,7 +105,7 @@ object FirebaseDBManager : EventStore {
         Timber.i("Firebase DB Reference : $database")
 
         val uid = firebaseUser.value!!.uid
-        val key = database.child("user-events").push().key
+        val key = database.child("events").push().key
         if (key == null) {
             Timber.i("Firebase Error : Key Empty")
             return
