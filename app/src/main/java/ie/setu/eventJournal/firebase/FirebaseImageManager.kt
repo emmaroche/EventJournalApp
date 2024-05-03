@@ -78,7 +78,6 @@ object FirebaseImageManager {
                 uploadTask.addOnSuccessListener { ut ->
                     ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
                         eventImageUri.value = task.result!!
-                        FirebaseDBManager.updateLocationImage(userid, eventImageUri.value.toString())
                         imageUrlLiveData.value = task.result.toString()
                     }
                 }
@@ -88,7 +87,9 @@ object FirebaseImageManager {
             uploadTask.addOnSuccessListener { ut ->
                 ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
                     eventImageUri.value = task.result!!
-                    FirebaseDBManager.updateLocationImage(userid, eventImageUri.value.toString())
+                    if (!updating) {
+                        FirebaseDBManager.updateLocationImage(userid, eventImageUri.value.toString())
+                    }
                     imageUrlLiveData.value = task.result.toString()
                 }
             }
