@@ -1,22 +1,24 @@
 package ie.setu.eventJournal.ui.report
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.ToggleButton
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -30,8 +32,11 @@ import ie.setu.eventJournal.adapters.EventClickListener
 import ie.setu.eventJournal.databinding.FragmentReportBinding
 import ie.setu.eventJournal.models.EventModel
 import ie.setu.eventJournal.ui.auth.LoggedInViewModel
-import ie.setu.eventJournal.utils.*
-import java.util.Locale
+import ie.setu.eventJournal.utils.SwipeToDeleteCallback
+import ie.setu.eventJournal.utils.SwipeToEditCallback
+import ie.setu.eventJournal.utils.createLoader
+import ie.setu.eventJournal.utils.hideLoader
+import ie.setu.eventJournal.utils.showLoader
 
 class ReportFragment : Fragment(), EventClickListener {
 
@@ -117,7 +122,6 @@ class ReportFragment : Fragment(), EventClickListener {
         fragBinding.recyclerView.adapter = EventAdapter(ArrayList(), this, reportViewModel.readOnly.value!!)
     }
 
-
     private fun setupMenu() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onPrepareMenu(menu: Menu) {
@@ -127,7 +131,7 @@ class ReportFragment : Fragment(), EventClickListener {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_report, menu)
 
-                // Toggle Event
+                // Toggle Event for filtering by favourites
                 val item = menu.findItem(R.id.toggleEvents) as MenuItem
                 item.setActionView(R.layout.togglebutton_layout)
                 val toggleEvents: ToggleButton = item.actionView!!.findViewById(R.id.favouritesToggleButton)
@@ -138,8 +142,19 @@ class ReportFragment : Fragment(), EventClickListener {
                     else reportViewModel.load()
                 }
 
+                // Toggle Event for filtering by date
+                val item2 = menu.findItem(R.id.toggleEvents2) as MenuItem
+                item2.setActionView(R.layout.togglebutton_layout2)
+                val toggleEvents2: ToggleButton = item2.actionView!!.findViewById(R.id.filterToggleButton)
+                toggleEvents.isChecked = false
+
+                toggleEvents2.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) reportViewModel.filterPastEvents()
+                    else reportViewModel.load()
+                }
+
                 // Search Event
-                // Reference used to help with implementing search bar to work: https://www.geeksforgeeks.org/android-searchview-with-recyclerview-using-kotlin/
+                // Reference used to help with implementing the search bar: https://www.geeksforgeeks.org/android-searchview-with-recyclerview-using-kotlin/
                 val searchManager =
                     requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
                 val searchItem = menu.findItem(R.id.action_search)
@@ -150,7 +165,7 @@ class ReportFragment : Fragment(), EventClickListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         val filteredList = ArrayList<EventModel>()
                         reportViewModel.observableEventsList.value!!.forEach {
-                            if (it.type.contains(query.orEmpty(), true)) {
+                            if (it.name.contains(query.orEmpty(), true)) {
                                 filteredList.add(it)
                             }
                         }
@@ -165,17 +180,19 @@ class ReportFragment : Fragment(), EventClickListener {
 
                 // Reference used to help with getting the toggle fav button to hide when search is active: https://stackoverflow.com/questions/7397391/event-for-handling-the-focus-of-the-edittext
                 searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
-                    // Enable/Disable the toggle button when the search view is not focused// Disable the toggle button when the search view is focused
+                    // Enable/Disable the toggle button when the search view is not focused
                     toggleEvents.post {
                         toggleEvents.isVisible = !hasFocus
+                        toggleEvents2.isVisible = !hasFocus
                     }
                 }
 
-                //  Reference used to help with with getting events to reload when search bar was closed: https://stackoverflow.com/questions/52765209/menuitem-setonactionexpandlistener-with-kotlin
+                //  Reference used to help with getting events to reload when search bar was closed: https://stackoverflow.com/questions/52765209/menuitem-setonactionexpandlistener-with-kotlin
                 searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
                     override fun onMenuItemActionExpand(p0: MenuItem): Boolean {
                         return true
                     }
+
 
                     override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
                         // Refresh the page when collapsed so events reload
@@ -228,8 +245,6 @@ class ReportFragment : Fragment(), EventClickListener {
     private fun render(eventsList: ArrayList<EventModel>) {
         eventAdapter = EventAdapter(eventsList, this, reportViewModel.readOnly.value!!)
         fragBinding.recyclerView.adapter = eventAdapter
-//        fragBinding.recyclerView.adapter = EventAdapter(eventsList, this, reportViewModel.readOnly.value!!)
-//        fragBinding.recyclerView.adapter = EventAdapter(eventsList,this,reportViewModel.readOnly.value!!)
         if (eventsList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
             fragBinding.eventsNotFound.visibility = View.VISIBLE

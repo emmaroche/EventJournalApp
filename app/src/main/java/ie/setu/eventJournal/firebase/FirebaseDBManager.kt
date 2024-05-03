@@ -16,7 +16,7 @@ object FirebaseDBManager : EventStore {
     var database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
     override fun findAll(eventsList: MutableLiveData<List<EventModel>>) {
-        database.child("events")
+        database.child("user-events")
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                     Timber.i("Firebase Event error : ${error.message}")
@@ -31,7 +31,7 @@ object FirebaseDBManager : EventStore {
                         event?.isFavourite = it.child("isFavourite").getValue(Boolean::class.java) ?: false
                         localList.add(event!!)
                     }
-                    database.child("events")
+                    database.child("user-events")
                         .removeEventListener(this)
 
                     eventsList.value = localList
@@ -105,7 +105,7 @@ object FirebaseDBManager : EventStore {
         Timber.i("Firebase DB Reference : $database")
 
         val uid = firebaseUser.value!!.uid
-        val key = database.child("events").push().key
+        val key = database.child("user-events").push().key
         if (key == null) {
             Timber.i("Firebase Error : Key Empty")
             return
@@ -114,7 +114,6 @@ object FirebaseDBManager : EventStore {
         val eventValues = event.toMap()
 
         val childAdd = HashMap<String, Any>()
-        childAdd["/events/$key"] = eventValues
         childAdd["/user-events/$uid/$key"] = eventValues
 
         database.updateChildren(childAdd)
@@ -123,7 +122,6 @@ object FirebaseDBManager : EventStore {
     override fun delete(userid: String, eventid: String) {
 
         val childDelete: MutableMap<String, Any?> = HashMap()
-        childDelete["/events/$eventid"] = null
         childDelete["/user-events/$userid/$eventid"] = null
 
         database.updateChildren(childDelete)
@@ -132,7 +130,6 @@ object FirebaseDBManager : EventStore {
     override fun deleteAllEvents(userid: String) {
 
         val childDelete: MutableMap<String, Any?> = HashMap()
-        childDelete["/events"] = null
         childDelete["/user-events/$userid"] = null
 
         database.updateChildren(childDelete)
@@ -143,7 +140,6 @@ object FirebaseDBManager : EventStore {
         val eventValues = event.toMap()
 
         val childUpdate: MutableMap<String, Any?> = HashMap()
-        childUpdate["events/$eventid"] = eventValues
         childUpdate["user-events/$userid/$eventid"] = eventValues
 
         database.updateChildren(childUpdate)
@@ -162,6 +158,6 @@ object FirebaseDBManager : EventStore {
     }
 
     fun updateLocationImage(eventId: String, imageUri: String) {
-        database.child("events").child(eventId).child("image").setValue(imageUri)
+        database.child("user-events").child(eventId).child("image").setValue(imageUri)
     }
 }

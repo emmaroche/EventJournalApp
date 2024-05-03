@@ -40,27 +40,25 @@ class MapsFragment : Fragment() {
     private val callback = OnMapReadyCallback { googleMap ->
         mapsViewModel.map = googleMap
         mapsViewModel.map.isMyLocationEnabled = true
-        mapsViewModel.currentLocation.observe(viewLifecycleOwner) {
-            val loc = LatLng(
-                mapsViewModel.currentLocation.value!!.latitude,
-                mapsViewModel.currentLocation.value!!.longitude
-            )
 
-            mapsViewModel.map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14f))
-            mapsViewModel.map.uiSettings.isZoomControlsEnabled = true
-            mapsViewModel.map.uiSettings.isMyLocationButtonEnabled = true
+        val loc = LatLng(
+            mapsViewModel.currentLocation.value!!.latitude,
+            mapsViewModel.currentLocation.value!!.longitude
+        )
 
-            reportViewModel.observableEventsList.observe(
-                viewLifecycleOwner
-            ) { events ->
-                events?.let {
-                    render(events as ArrayList<EventModel>)
-                    hideLoader(loader)
-                }
+        mapsViewModel.map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14f))
+        mapsViewModel.map.uiSettings.isZoomControlsEnabled = true
+        mapsViewModel.map.uiSettings.isMyLocationButtonEnabled = true
+
+        reportViewModel.observableEventsList.observe(
+            viewLifecycleOwner
+        ) { events ->
+            events?.let {
+                render(events as ArrayList<EventModel>)
+                hideLoader(loader)
             }
         }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -116,6 +114,18 @@ class MapsFragment : Fragment() {
                     if (isChecked) reportViewModel.loadAll()
                     else reportViewModel.load()
                 }
+
+                // Toggle Event for filtering by date
+                val item2 = menu.findItem(R.id.toggleEvents2) as MenuItem
+                item2.setActionView(R.layout.togglebutton_layout2)
+                val toggleEvents2: ToggleButton = item2.actionView!!.findViewById(R.id.filterToggleButton)
+                toggleEvents.isChecked = false
+
+                toggleEvents2.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) reportViewModel.filterPastEvents()
+                    else reportViewModel.load()
+                }
+
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

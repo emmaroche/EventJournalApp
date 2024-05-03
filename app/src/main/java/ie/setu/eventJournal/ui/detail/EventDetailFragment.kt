@@ -215,7 +215,7 @@ class EventDetailFragment : Fragment() {
     }
 
     private fun showSelectedImage(imageUri: Uri) {
-        // Update selectedImageUri immediately
+        // Update selectedImageUri
         selectedImageUri = imageUri
 
         // Load the selected event image into ImageView using Picasso

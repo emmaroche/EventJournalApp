@@ -73,7 +73,7 @@
     <string name="button_addImage">Add Image</string>
     <string name="button_location">Add Location</string>
     <string name="change_event_image">Change Image\n</string>
-    <string name="action_location">Location</string>
+    <string name="action_location">Event Locations</string>
     <string name="search">Search\n</string>
     <string name="delete_all_events">Delete All Events</string>
     <string name="edit_image">Edit Image</string>
