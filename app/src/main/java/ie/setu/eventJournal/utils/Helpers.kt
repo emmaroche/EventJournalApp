@@ -89,7 +89,7 @@ fun readImageUri(resultCode: Int, data: Intent?): Uri? {
     return uri
 }
 
-// Resource used to help with hiding keyboard when clicked on other part of screen: https://stackoverflow.com/questions/41790357/close-hide-the-android-soft-keyboard-with-kotlin
+// Reference used to help with hiding keyboard when clicked off of: https://stackoverflow.com/questions/41790357/close-hide-the-android-soft-keyboard-with-kotlin
 fun Fragment.hideSoftKeyboard() {
     val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     inputMethodManager.hideSoftInputFromWindow(requireView().windowToken, 0)
