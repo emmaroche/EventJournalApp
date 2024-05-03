@@ -1,5 +1,6 @@
 package ie.setu.eventJournal.models
 
+import android.net.Uri
 import android.os.Parcelable
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
