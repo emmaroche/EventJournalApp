@@ -4,10 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
 
 interface EventStore {
-    fun findAll(
-        eventsList:
-        MutableLiveData<List<EventModel>>
-    )
+//    fun findAll(
+//        eventsList:
+//        MutableLiveData<List<EventModel>>
+//    )
     fun findAll(
         userid: String,
         eventsList:

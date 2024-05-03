@@ -2,12 +2,13 @@ package ie.setu.eventJournal.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.net.toUri
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import ie.setu.eventJournal.R
 import ie.setu.eventJournal.databinding.CardEventBinding
 import ie.setu.eventJournal.models.EventModel
+import androidx.core.net.toUri
 import ie.setu.eventJournal.utils.customTransformation
 import timber.log.Timber
 
