@@ -91,7 +91,7 @@ class EventFragment : Fragment() {
             }, year, month, day).show()
         }
 
-        // Resource used to help add drop down options for event types: https://www.geeksforgeeks.org/spinner-in-kotlin/
+        // Reference used to help add drop down options for event types: https://www.geeksforgeeks.org/spinner-in-kotlin/
         val spinner = fragBinding.spinnerEventType
         val eventTypes = resources.getStringArray(R.array.eventTypesArray)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, eventTypes)

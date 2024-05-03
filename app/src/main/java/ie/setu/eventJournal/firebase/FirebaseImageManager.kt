@@ -21,7 +21,7 @@ object FirebaseImageManager {
     private var eventImageUri = MutableLiveData<Uri>() // Separates event picture URI
 
     fun checkStorageForExistingProfilePic(userid: String) {
-        val imageRef = storage.child("photos").child("${userid}.jpg")
+        val imageRef = storage.child("profile-pictures").child("${userid}.jpg")
         val defaultImageRef = storage.child("homer.jpg")
 
         imageRef.metadata.addOnSuccessListener { //File Exists
@@ -35,7 +35,7 @@ object FirebaseImageManager {
     }
 
     fun uploadProfilePicToFirebase(userid: String, bitmap: Bitmap, updating: Boolean) {
-        val imageRef = storage.child("photos").child("${userid}.jpg")
+        val imageRef = storage.child("profile-pictures").child("${userid}.jpg")
         val baos = ByteArrayOutputStream()
         lateinit var uploadTask: UploadTask
 
@@ -95,6 +95,7 @@ object FirebaseImageManager {
         }
         return imageUrlLiveData
     }
+
     fun updateUserImage(userid: String, imageUri: Uri?, imageView: ImageView, updating: Boolean) {
         Picasso.get().load(imageUri)
             .resize(200, 200)

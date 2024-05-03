@@ -7,6 +7,9 @@ import com.google.firebase.auth.FirebaseUser
 import ie.setu.eventJournal.firebase.FirebaseDBManager
 import ie.setu.eventJournal.models.EventModel
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ReportViewModel : ViewModel() {
 
@@ -52,6 +55,21 @@ class ReportViewModel : ViewModel() {
         event.isFavourite = !event.isFavourite
         FirebaseDBManager.update(liveFirebaseUser.value?.uid!!, event.uid, event)
         _eventChanged.value = event
+    }
+
+
+    fun filterPastEvents() {
+        val allEvents = eventsList.value
+        if (allEvents != null) {
+            val format = SimpleDateFormat("d/M/yyyy", Locale.getDefault())
+            val pastEvents = allEvents.filter {
+                val eventDate = format.parse(it.date)
+                eventDate != null && eventDate.before(Date())
+            }
+            eventsList.value = pastEvents
+        } else {
+            Timber.e("Events list is null. Cannot filter past events.")
+        }
     }
 
     fun delete(userid: String, id: String) {

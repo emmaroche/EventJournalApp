@@ -24,7 +24,7 @@ import com.google.android.gms.common.SignInButton
 
 class Login : AppCompatActivity() {
 
-    // Google authentication reference  : https://www.youtube.com/watch?v=-tCIsI7aZGk
+    // Google authentication reference: https://www.youtube.com/watch?v=-tCIsI7aZGk
     // Note: I added google auth before lab steps came out which is why I have continued with this alternative approach
 
     private lateinit var loginRegisterViewModel: LoginRegisterViewModel
