@@ -8,7 +8,6 @@
     android:background="@color/white"
     tools:context=".ui.about.AboutFragment">
 
-
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="341dp"
@@ -44,7 +43,6 @@
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="21sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -60,7 +58,6 @@
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="21sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Event Journal App</string>
     <string name="eventTitle">Welcome!</string>
-    <string name="eventSubtitle">Your Event Details</string>
+    <string name="eventSubtitle">Add Your Event Details</string>
     <string name="event_name">Event Name</string>
     <string name="event_type">Event Type</string>
     <string name="event_time">Event Time</string>
@@ -17,7 +17,7 @@
     <string name="defaultMethod">N/A</string>
     <string name="enter_amount">Enter Amount</string>
     <string name="action_event">Add Event</string>
-    <string name="action_report">Event Details</string>
+    <string name="action_report">Events</string>
 
     <string name="action_share">Share</string>
     <string name="action_send">Send</string>
@@ -32,7 +32,7 @@
     <string name="aboutus_message_second">We are here to provide you with the ultimate event journal experience.</string>
     <string name="aboutus_message_third">Thank you for choosing us!</string>
 
-    <string name="eventsNotFound">No Events Yet…\nGo Add an Event!</string>
+    <string name="eventsNotFound">No Events Yet…</string>
     <string name="eventError">Error : Couldn\'t Add an Event…</string>
     <string name="eventDetails">Event Details</string>
 
@@ -44,7 +44,7 @@
     <string name="delete">Delete</string>
 
 
-    <string name="messageLoading">Please Wait while the Events are Loading...</string>
+    <string name="messageLoading">Please Wait while the Events are Loading…</string>
 
     <!-- START Firebase Resources-->
 
@@ -73,5 +73,27 @@
     <string name="button_addImage">Add Image</string>
     <string name="button_location">Add Location</string>
     <string name="change_event_image">Change Image\n</string>
-    <string name="action_location">Location</string>
+    <string name="action_location">Event Locations</string>
+    <string name="search">Search\n</string>
+    <string name="delete_all_events">Delete All Events</string>
+    <string name="edit_image">Edit Image</string>
+    <string name="update_event">Update</string>
+    <string name="delete_event">Delete</string>
+    <string name="amount_spent">Total Spent on this Event</string>
+
+    <string-array name="eventTypesArray">
+        <item>Wedding</item>
+        <item>Holiday</item>
+        <item>Birthday Party</item>
+        <item>Conference</item>
+        <item>Sport</item>
+        <item>Concert</item>
+        <item>Graduation</item>
+        <item>Corporate Event</item>
+        <item>Anniversary</item>
+        <item>Festival</item>
+        <item>Exhibition</item>
+        <item>Workshops</item>
+        <item>Other</item>
+    </string-array>
 </resources>

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 
 import android.os.Bundle
 import android.view.*
+import android.widget.ToggleButton
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -39,27 +40,25 @@ class MapsFragment : Fragment() {
     private val callback = OnMapReadyCallback { googleMap ->
         mapsViewModel.map = googleMap
         mapsViewModel.map.isMyLocationEnabled = true
-        mapsViewModel.currentLocation.observe(viewLifecycleOwner) {
-            val loc = LatLng(
-                mapsViewModel.currentLocation.value!!.latitude,
-                mapsViewModel.currentLocation.value!!.longitude
-            )
 
-            mapsViewModel.map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14f))
-            mapsViewModel.map.uiSettings.isZoomControlsEnabled = true
-            mapsViewModel.map.uiSettings.isMyLocationButtonEnabled = true
+        val loc = LatLng(
+            mapsViewModel.currentLocation.value!!.latitude,
+            mapsViewModel.currentLocation.value!!.longitude
+        )
 
-            reportViewModel.observableEventsList.observe(
-                viewLifecycleOwner
-            ) { events ->
-                events?.let {
-                    render(events as ArrayList<EventModel>)
-                    hideLoader(loader)
-                }
+        mapsViewModel.map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14f))
+        mapsViewModel.map.uiSettings.isZoomControlsEnabled = true
+        mapsViewModel.map.uiSettings.isMyLocationButtonEnabled = true
+
+        reportViewModel.observableEventsList.observe(
+            viewLifecycleOwner
+        ) { events ->
+            events?.let {
+                render(events as ArrayList<EventModel>)
+                hideLoader(loader)
             }
         }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -108,13 +107,25 @@ class MapsFragment : Fragment() {
 
                 val item = menu.findItem(R.id.toggleEvents) as MenuItem
                 item.setActionView(R.layout.togglebutton_layout)
-                val toggleEvents: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
+                val toggleEvents: ToggleButton = item.actionView!!.findViewById(R.id.favouritesToggleButton)
                 toggleEvents.isChecked = false
 
                 toggleEvents.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) reportViewModel.loadAll()
                     else reportViewModel.load()
                 }
+
+                // Toggle Event for filtering by date
+                val item2 = menu.findItem(R.id.toggleEvents2) as MenuItem
+                item2.setActionView(R.layout.togglebutton_layout2)
+                val toggleEvents2: ToggleButton = item2.actionView!!.findViewById(R.id.filterToggleButton)
+                toggleEvents.isChecked = false
+
+                toggleEvents2.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) reportViewModel.filterPastEvents()
+                    else reportViewModel.load()
+                }
+
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

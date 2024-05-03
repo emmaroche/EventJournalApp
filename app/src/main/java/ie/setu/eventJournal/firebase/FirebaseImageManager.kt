@@ -21,7 +21,7 @@ object FirebaseImageManager {
     private var eventImageUri = MutableLiveData<Uri>() // Separates event picture URI
 
     fun checkStorageForExistingProfilePic(userid: String) {
-        val imageRef = storage.child("photos").child("${userid}.jpg")
+        val imageRef = storage.child("profile-pictures").child("${userid}.jpg")
         val defaultImageRef = storage.child("homer.jpg")
 
         imageRef.metadata.addOnSuccessListener { //File Exists
@@ -35,7 +35,7 @@ object FirebaseImageManager {
     }
 
     fun uploadProfilePicToFirebase(userid: String, bitmap: Bitmap, updating: Boolean) {
-        val imageRef = storage.child("photos").child("${userid}.jpg")
+        val imageRef = storage.child("profile-pictures").child("${userid}.jpg")
         val baos = ByteArrayOutputStream()
         lateinit var uploadTask: UploadTask
 
@@ -63,7 +63,8 @@ object FirebaseImageManager {
         }
     }
 
-    fun uploadEventPictureToFirebase(userid: String, bitmap: Bitmap, updating: Boolean) {
+    fun uploadEventPictureToFirebase(userid: String, bitmap: Bitmap, updating: Boolean): MutableLiveData<String> {
+        val imageUrlLiveData = MutableLiveData<String>()
         val imageRef = storage.child("event-photos").child("${userid}.jpg")
         val baos = ByteArrayOutputStream()
         lateinit var uploadTask: UploadTask
@@ -78,6 +79,7 @@ object FirebaseImageManager {
                     ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
                         eventImageUri.value = task.result!!
                         FirebaseDBManager.updateLocationImage(userid, eventImageUri.value.toString())
+                        imageUrlLiveData.value = task.result.toString()
                     }
                 }
             }
@@ -87,9 +89,11 @@ object FirebaseImageManager {
                 ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
                     eventImageUri.value = task.result!!
                     FirebaseDBManager.updateLocationImage(userid, eventImageUri.value.toString())
+                    imageUrlLiveData.value = task.result.toString()
                 }
             }
         }
+        return imageUrlLiveData
     }
 
     fun updateUserImage(userid: String, imageUri: Uri?, imageView: ImageView, updating: Boolean) {

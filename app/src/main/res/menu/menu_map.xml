@@ -9,7 +9,7 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/toggleEvents"
+        android:id="@+id/favouritesToggleButton"
         android:title=""
         app:actionLayout="@layout/togglebutton_layout"
         app:showAsAction="always" />
